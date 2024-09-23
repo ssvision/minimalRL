@@ -26,6 +26,8 @@ Implementations of basic RL algorithms with minimal lines of codes! (PyTorch bas
 11. [Vtrace](https://github.com/seungeunrho/minimalRL/blob/master/vtrace.py) (137 lines) added!!
 12. Any suggestion ...? 
 
+## Modified Algorithms
+1. [REINFORCE_modified](https://youtu.be/9N6Uoul1HuA?feature=shared)
 
 ## Dependencies
 1. PyTorch

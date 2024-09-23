@@ -1,9 +1,13 @@
-import gym
+import gymnasium as gym
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 from torch.distributions import Categorical
+
+from tqdm import tqdm
+import matplotlib.pyplot as plt
+
 
 #Hyperparameters
 learning_rate = 0.0002
@@ -37,20 +41,36 @@ class Policy(nn.Module):
         self.data = []
 
 def main():
+
+    #Define your environment here
     env = gym.make('CartPole-v1')
+
+    #Create the Policy Network Object
     pi = Policy()
     score = 0.0
+
+
     print_interval = 20
+    rewards = []
+
+    #Define the num_episodes here (10k-1M)
+    n_eps = 10
     
     
-    for n_epi in range(10000):
+    for n_epi in tqdm(range(n_eps)):
         s, _ = env.reset()
         done = False
         
         while not done: # CartPole-v1 forced to terminates at 500 step.
-            prob = pi(torch.from_numpy(s).float())
-            m = Categorical(prob)
-            a = m.sample()
+
+            prob = pi(torch.from_numpy(s).float()) #Get the action probs here
+            # print(f"prob is : {prob}") 
+            m = Categorical(prob) #Create a distribution for the actions based on probs
+            # print(f"m is : {m}")
+            a = m.sample() #Sample an action from the distribution
+            # print(f"a is : {a}")
+
+            
             s_prime, r, done, truncated, info = env.step(a.item())
             pi.put_data((r,prob[a]))
             s = s_prime
@@ -60,8 +80,12 @@ def main():
         
         if n_epi%print_interval==0 and n_epi!=0:
             print("# of episode :{}, avg score : {}".format(n_epi, score/print_interval))
+            rewards.append(score/print_interval)
             score = 0.0
     env.close()
+    plt.plot(rewards)
+    plt.show()
+
     
 if __name__ == '__main__':
     main()
