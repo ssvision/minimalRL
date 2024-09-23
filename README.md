@@ -1,5 +1,9 @@
 # minimalRL-pytorch
 
+
+This is a fork of seungeunrho/minimalRL. The master brach contains original code.
+All of the changes/additions made by me are available on the main branch.
+
 Implementations of basic RL algorithms with minimal lines of codes! (PyTorch based)
 
 * Each algorithm is complete within a single file.
